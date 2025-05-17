@@ -1,0 +1,96 @@
+.sidebar {
+  background-color: $dark-color;
+  color: $light-color;
+  height: 100vh; // Adjust for header height// Height of header
+  transition: transform $transition-normal;
+  z-index: $z-index-fixed;
+  overflow-y: auto; // Allow scrolling if sidebar content is too long
+
+  &__nav {
+    padding: $spacing-md;
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    padding: $spacing-md;
+    color: $light-color;
+    border-radius: $border-radius-md;
+    margin-bottom: $spacing-sm;
+    transition: background-color $transition-fast;
+    
+    &-icon {
+      margin-right: $spacing-md;
+      font-size: $font-size-large;
+    }
+    
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+      color: white;
+    }
+    
+    &.active {
+      background-color: $primary-color;
+      color: white;
+    }
+  }
+  
+  &__logout {
+    background: none;
+    border: none;
+    text-align: left;
+    width: 100%;
+    cursor: pointer;
+    font-family: $font-family-primary;
+    font-size: $font-size-base;
+    
+    &:hover {
+      background-color: rgba($error-color, 0.2);
+    }
+  }
+
+  &__section {
+    margin-top: $spacing-lg;
+    margin-bottom: $spacing-sm;
+    padding: 0 $spacing-md;
+    font-size: $font-size-small;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.5);
+    font-weight: $font-weight-bold;
+  }
+
+  &__toggle {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: $z-index-fixed + 1;
+    background: $primary-color;
+    color: white;
+    border: none;
+    border-radius: $border-radius-circle;
+    width: 40px;
+    height: 40px;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: $shadow-md;
+  }
+
+  @media (max-width: $breakpoint-md) {
+    position: fixed;
+    top: 0;
+    left: 0;
+    transform: translateX(-100%);
+    padding-top: 70px; // Space for header
+    z-index: $z-index-fixed;
+    
+    &.open {
+      transform: translateX(0);
+    }
+    
+    &__toggle {
+      display: flex;
+    }
+  }
+}

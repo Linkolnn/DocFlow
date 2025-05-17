@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="500" height="400" viewBox="0 0 500 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="500" height="400" rx="20" fill="#F0F9FF"/>
+  
+  <!-- Document Stack -->
+  <rect x="100" y="100" width="300" height="200" rx="10" fill="white" stroke="#3498DB" stroke-width="2"/>
+  <rect x="110" y="90" width="300" height="200" rx="10" fill="white" stroke="#3498DB" stroke-width="2"/>
+  <rect x="120" y="80" width="300" height="200" rx="10" fill="white" stroke="#3498DB" stroke-width="2"/>
+  
+  <!-- Document Content -->
+  <rect x="150" y="120" width="240" height="20" rx="4" fill="#E1F0FA"/>
+  <rect x="150" y="150" width="180" height="10" rx="4" fill="#E1F0FA"/>
+  <rect x="150" y="170" width="240" height="10" rx="4" fill="#E1F0FA"/>
+  <rect x="150" y="190" width="200" height="10" rx="4" fill="#E1F0FA"/>
+  <rect x="150" y="210" width="220" height="10" rx="4" fill="#E1F0FA"/>
+  
+  <!-- Checkmark -->
+  <circle cx="380" cy="240" r="30" fill="#2ECC71"/>
+  <path d="M370 240L377 247L390 234" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  
+  <!-- Decorative Elements -->
+  <circle cx="80" cy="80" r="20" fill="#3498DB" opacity="0.2"/>
+  <circle cx="420" cy="320" r="30" fill="#3498DB" opacity="0.2"/>
+  <circle cx="50" cy="300" r="15" fill="#3498DB" opacity="0.2"/>
+  <circle cx="450" cy="100" r="25" fill="#3498DB" opacity="0.2"/>
+</svg>

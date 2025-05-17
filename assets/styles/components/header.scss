@@ -1,0 +1,113 @@
+.header {
+  background-color: white;
+  box-shadow: $shadow-sm;
+  padding: $spacing-md 0;
+  position: sticky;
+  top: 0;
+  z-index: $z-index-sticky;
+
+  &__container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__logo {
+    font-size: $font-size-xlarge;
+    font-weight: $font-weight-bold;
+    color: $primary-color;
+  }
+
+  &__nav {
+    display: flex;
+    gap: $spacing-lg;
+
+    &-item {
+      color: $text-color;
+      font-weight: $font-weight-medium;
+      
+      &.active {
+        color: $primary-color;
+      }
+    }
+  }
+
+  &__auth {
+    display: flex;
+    gap: $spacing-md;
+  }
+
+  &__mobile-toggle {
+    display: none;
+    font-size: $font-size-xlarge;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: $text-color;
+  }
+
+  &__user {
+    margin-right: $spacing-md;
+    font-weight: $font-weight-medium;
+  }
+
+  @media (max-width: $breakpoint-md) {
+    &__container {
+      flex-wrap: wrap;
+      position: relative;
+    }
+
+    &__nav {
+      display: none;
+      
+      &.open {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background-color: white;
+        padding: $spacing-md;
+        box-shadow: $shadow-sm;
+        z-index: $z-index-dropdown;
+        gap: $spacing-md;
+        
+        .header__nav-item {
+          padding: $spacing-sm 0;
+          border-bottom: 1px solid $border-color;
+          
+          &:last-child {
+            border-bottom: none;
+          }
+        }
+      }
+    }
+
+    &__auth {
+      margin-left: auto;
+      margin-right: $spacing-md;
+      
+      .btn {
+        padding: $spacing-xs $spacing-sm;
+        font-size: $font-size-small;
+      }
+    }
+
+    &__mobile-toggle {
+      display: block;
+    }
+  }
+  
+  @media (max-width: $breakpoint-sm) {
+    &__auth {
+      .btn-outline {
+        display: none;
+      }
+    }
+    
+    &__user {
+      display: none;
+    }
+  }
+}

@@ -1,0 +1,112 @@
+.auth-form {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: $spacing-xl;
+  background-color: white;
+  border-radius: $border-radius-md;
+  box-shadow: $shadow-md;
+  
+  &__header {
+    text-align: center;
+    margin-bottom: $spacing-lg;
+    
+    &-title {
+      font-size: $font-size-xxlarge;
+      font-weight: $font-weight-bold;
+      color: $dark-color;
+      margin-bottom: $spacing-sm;
+    }
+    
+    &-subtitle {
+      color: rgba($text-color, 0.7);
+    }
+  }
+  
+  &__group {
+    margin-bottom: $spacing-md;
+  }
+  
+  &__label {
+    display: block;
+    margin-bottom: $spacing-xs;
+    font-weight: $font-weight-medium;
+  }
+  
+  &__input {
+    width: 100%;
+    padding: $spacing-md;
+    border: 1px solid $border-color;
+    border-radius: $border-radius-md;
+    font-family: $font-family-primary;
+    font-size: $font-size-base;
+    transition: border-color $transition-fast;
+    
+    &:focus {
+      outline: none;
+      border-color: $primary-color;
+    }
+    
+    &.is-invalid {
+      border-color: $error-color;
+    }
+  }
+  
+  &__error {
+    color: $error-color;
+    font-size: $font-size-small;
+    margin-top: $spacing-xs;
+  }
+  
+  &__submit {
+    width: 100%;
+    padding: $spacing-md;
+    margin-top: $spacing-lg;
+    background-color: $primary-color;
+    color: white;
+    border: none;
+    border-radius: $border-radius-md;
+    font-weight: $font-weight-medium;
+    cursor: pointer;
+    transition: background-color $transition-fast;
+    
+    &:hover {
+      background-color: darken($primary-color, 10%);
+    }
+    
+    &:disabled {
+      background-color: rgba($primary-color, 0.5);
+      cursor: not-allowed;
+    }
+  }
+  
+  &__footer {
+    margin-top: $spacing-lg;
+    text-align: center;
+    font-size: $font-size-small;
+    
+    a {
+      color: $primary-color;
+      font-weight: $font-weight-medium;
+    }
+  }
+  
+  &__divider {
+    display: flex;
+    align-items: center;
+    margin: $spacing-lg 0;
+    
+    &::before,
+    &::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background-color: $border-color;
+    }
+    
+    &-text {
+      padding: 0 $spacing-sm;
+      color: rgba($text-color, 0.7);
+      font-size: $font-size-small;
+    }
+  }
+}

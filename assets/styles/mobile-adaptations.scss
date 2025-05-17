@@ -1,0 +1,195 @@
+/* Мобильные адаптации для приложения DocFlow */
+
+/* Адаптация страницы документа */
+.document-detail {
+  @media (max-width: $breakpoint-md) {
+    padding: $spacing-md;
+    
+    &__meta {
+      gap: $spacing-md;
+    }
+    
+    &__content-box {
+      padding: $spacing-sm;
+      font-size: 0.9rem;
+    }
+    
+    &__section-title {
+      font-size: $font-size-large;
+    }
+  }
+  
+  @media (max-width: $breakpoint-sm) {
+    padding: $spacing-sm;
+    
+    &__meta {
+      gap: $spacing-sm;
+      flex-direction: column;
+    }
+    
+    &__content-box {
+      padding: $spacing-sm;
+      font-size: 0.85rem;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+    
+    &__section-title {
+      font-size: $font-size-base;
+    }
+    
+    &__actions {
+      flex-direction: column;
+      gap: $spacing-sm;
+    }
+  }
+  
+  @media (max-width: 320px) {
+    padding: $spacing-xs;
+    
+    &__content-box {
+      padding: $spacing-xs;
+      font-size: 0.8rem;
+      max-height: 250px;
+      border-radius: $border-radius-sm;
+    }
+    
+    &__section-title {
+      margin-bottom: $spacing-sm;
+    }
+  }
+}
+
+.document-detail-page {
+  @media (max-width: $breakpoint-sm) {
+    &__header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    
+    &__title {
+      font-size: $font-size-xlarge;
+    }
+  }
+  
+  @media (max-width: 320px) {
+    &__title {
+      font-size: $font-size-large;
+    }
+  }
+}
+
+/* Адаптация hero секции */
+.hero {
+  @media (max-width: $breakpoint-sm) {
+    &__btn {
+      padding: $spacing-sm $spacing-lg;
+    }
+  }
+  
+  @media (max-width: 320px) {
+    &__btn {
+      padding: $spacing-xs $spacing-md;
+      font-size: $font-size-small;
+    }
+    
+    &__image {
+      max-width: 280px;
+    }
+  }
+}
+
+/* Адаптация CTA секции */
+.cta {
+  @media (max-width: $breakpoint-sm) {
+    &__title {
+      font-size: $font-size-xlarge;
+    }
+    
+    &__description {
+      font-size: $font-size-base;
+      margin-bottom: $spacing-md;
+    }
+    
+    &__btn {
+      padding: $spacing-sm $spacing-lg;
+    }
+  }
+  
+  @media (max-width: 320px) {
+    padding: $spacing-lg 0;
+    
+    &__title {
+      font-size: $font-size-large;
+    }
+    
+    &__description {
+      font-size: $font-size-small;
+      margin-bottom: $spacing-sm;
+    }
+    
+    &__btn {
+      padding: $spacing-xs $spacing-md;
+      font-size: $font-size-small;
+    }
+  }
+}
+
+/* Адаптация секции features */
+.features {
+  @media (max-width: $breakpoint-sm) {
+    padding: $spacing-xl 0;
+  }
+  
+  @media (max-width: 320px) {
+    padding: $spacing-lg 0;
+    
+    &__grid {
+      gap: $spacing-sm;
+    }
+  }
+}
+
+.feature-card {
+  @media (max-width: $breakpoint-sm) {
+    padding: $spacing-md;
+    
+    &__icon {
+      font-size: 2rem;
+      margin-bottom: $spacing-sm;
+    }
+    
+    &__title {
+      font-size: $font-size-base;
+    }
+    
+    &__description {
+      font-size: $font-size-small;
+    }
+  }
+  
+  @media (max-width: 320px) {
+    padding: $spacing-sm;
+    
+    &__icon {
+      font-size: 1.5rem;
+    }
+    
+    &__title {
+      font-size: $font-size-base;
+      margin-bottom: $spacing-xs;
+    }
+  }
+}
+
+.section-title {
+  @media (max-width: $breakpoint-sm) {
+    font-size: $font-size-xlarge;
+    margin-bottom: $spacing-lg;
+  }
+  
+  @media (max-width: 320px) {
+    font-size: $font-size-large;
+    margin-bottom: $spacing-md;
+  }
+}

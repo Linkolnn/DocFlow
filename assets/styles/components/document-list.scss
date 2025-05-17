@@ -1,0 +1,231 @@
+.document-list {
+  width: 100%;
+  border-collapse: collapse;
+  
+  &__header {
+    background-color: $light-color;
+    
+    th {
+      padding: $spacing-md;
+      text-align: left;
+      font-weight: $font-weight-medium;
+      border-bottom: 2px solid $border-color;
+    }
+  }
+  
+  &__row {
+    border-bottom: 1px solid $border-color;
+    transition: background-color $transition-fast;
+    
+    &:hover {
+      background-color: rgba($primary-color, 0.05);
+    }
+    
+    td {
+      padding: $spacing-md;
+    }
+  }
+  
+  &__title {
+    font-weight: $font-weight-medium;
+    color: $dark-color;
+  }
+  
+  &__status {
+    display: inline-block;
+    padding: $spacing-xs $spacing-sm;
+    border-radius: $border-radius-sm;
+    font-size: $font-size-small;
+    font-weight: $font-weight-medium;
+    
+    &--draft {
+      background-color: $light-color;
+      color: $dark-color;
+    }
+    
+    &--pending {
+      background-color: $warning-color;
+      color: white;
+    }
+    
+    &--approved {
+      background-color: $success-color;
+      color: white;
+    }
+    
+    &--rejected {
+      background-color: $error-color;
+      color: white;
+    }
+  }
+  
+  &__date {
+    color: rgba($text-color, 0.7);
+    font-size: $font-size-small;
+  }
+  
+  &__actions {
+    display: flex;
+    gap: $spacing-sm;
+    
+    button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: $primary-color;
+      transition: color $transition-fast;
+      
+      &:hover {
+        color: darken($primary-color, 10%);
+      }
+    }
+  }
+  
+  &__empty {
+    padding: $spacing-xl;
+    text-align: center;
+    color: rgba($text-color, 0.7);
+  }
+  
+  &__pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: $spacing-lg;
+    gap: $spacing-sm;
+    
+    &-item {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      border-radius: $border-radius-sm;
+      cursor: pointer;
+      transition: all $transition-fast;
+      
+      &.active {
+        background-color: $primary-color;
+        color: white;
+      }
+      
+      &:not(.active):hover {
+        background-color: $light-color;
+      }
+    }
+  }
+  
+  @media (max-width: $breakpoint-md) {
+    &__header {
+      .hide-md {
+        display: none;
+      }
+      
+      th {
+        padding: $spacing-sm;
+        font-size: 0.9rem;
+      }
+    }
+    
+    &__row {
+      td.hide-md {
+        display: none;
+      }
+      
+      td {
+        padding: $spacing-sm;
+        font-size: 0.9rem;
+      }
+    }
+    
+    &__title {
+      max-width: 150px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    
+    &__pagination {
+      &-item {
+        width: 32px;
+        height: 32px;
+        font-size: 0.9rem;
+      }
+    }
+  }
+  
+  @media (max-width: $breakpoint-sm) {
+    &__header {
+      th {
+        padding: $spacing-xs;
+        font-size: 0.85rem;
+      }
+    }
+    
+    &__row {
+      td {
+        padding: $spacing-xs;
+        font-size: 0.85rem;
+      }
+    }
+    
+    &__title {
+      max-width: 120px;
+    }
+    
+    &__status {
+      padding: 2px 4px;
+      font-size: 0.75rem;
+    }
+    
+    &__actions {
+      button {
+        font-size: 0.9rem;
+        padding: 2px;
+      }
+    }
+    
+    &__pagination {
+      flex-wrap: wrap;
+      justify-content: center;
+      
+      &-item {
+        width: 28px;
+        height: 28px;
+        font-size: 0.8rem;
+      }
+    }
+  }
+  
+  @media (max-width: 320px) {
+    &__header {
+      th {
+        padding: 4px;
+        font-size: 0.8rem;
+      }
+    }
+    
+    &__row {
+      td {
+        padding: 4px;
+        font-size: 0.8rem;
+      }
+    }
+    
+    &__title {
+      max-width: 80px;
+    }
+    
+    &__status {
+      padding: 1px 3px;
+      font-size: 0.7rem;
+    }
+    
+    &__actions {
+      gap: 2px;
+      
+      button {
+        font-size: 0.8rem;
+      }
+    }
+  }
+}
