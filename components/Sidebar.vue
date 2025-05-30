@@ -12,7 +12,7 @@
     <nav class="sidebar__nav">
       <NuxtLink to="/dashboard" class="sidebar__item" exact-active-class="active">
         <span class="sidebar__item-icon">📊</span>
-        Информационная панель
+        Обзор
       </NuxtLink>
       
       <div class="sidebar__section">Документы</div>

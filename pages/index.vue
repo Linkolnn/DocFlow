@@ -66,7 +66,7 @@
             Присоединяйтесь к тысячам компаний, которые используют DocFlow для оптимизации своих процессов работы с документами.
           </p>
           <NuxtLink v-if="!isAuthenticated" to="/register" class="btn btn-primary cta__btn">Начать сегодня</NuxtLink>
-          <NuxtLink v-else to="/dashboard" class="btn btn-primary cta__btn">Перейти в дашборд</NuxtLink>
+          <NuxtLink v-else to="/dashboard" class="btn btn-primary cta__btn">Приступить к работе</NuxtLink>
         </div>
       </div>
     </section>

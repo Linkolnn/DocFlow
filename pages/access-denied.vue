@@ -50,7 +50,7 @@ definePageMeta({
   
   &__message {
     margin-bottom: $spacing-lg;
-    color: $text-color-secondary;
+    color: #777777; /* Вторичный цвет текста */
   }
   
   &__actions {
