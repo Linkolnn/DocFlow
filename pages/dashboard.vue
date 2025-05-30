@@ -1,8 +1,8 @@
 <template>
-  <div class="dashboard">
-    <div class="dashboard__header">
-      <h1 class="dashboard__title">Дашборд</h1>
-      <div class="dashboard__actions">
+  <div class="overview">
+    <div class="overview__header">
+      <h1 class="overview__title">Информационная панель</h1>
+      <div class="overview__actions">
         <SearchBar 
           placeholder="Поиск документов и задач..." 
           @select="handleSearchSelect"
@@ -10,7 +10,7 @@
       </div>
     </div>
     
-    <div class="dashboard__stats">
+    <div class="overview__stats">
       <div class="stat-card">
         <div class="stat-card__icon stat-card__icon--blue">📄</div>
         <div class="stat-card__content">
@@ -44,23 +44,23 @@
       </div>
     </div>
     
-    <div class="dashboard__sections">
+    <div class="overview__sections">
       <div class="dashboard__section">
         <div class="dashboard__section-header">
-          <h2 class="dashboard__section-title">Недавние документы</h2>
-          <NuxtLink to="/documents" class="dashboard__section-link">Посмотреть все</NuxtLink>
+          <h2 class="overview__section-title">Недавние документы</h2>
+          <NuxtLink to="/documents" class="overview__section-link">Посмотреть все</NuxtLink>
         </div>
         
-        <div v-if="loading.documents" class="dashboard__loading">
+        <div v-if="loading.documents" class="overview__loading">
           Загрузка документов...
         </div>
         
-        <div v-else-if="recentDocuments.length === 0" class="dashboard__empty">
+        <div v-else-if="recentDocuments.length === 0" class="overview__empty">
           <p>Документы не найдены.</p>
           <NuxtLink to="/documents/create" class="btn btn-primary">Создать документ</NuxtLink>
         </div>
         
-        <div v-else class="dashboard__documents">
+        <div v-else class="overview__documents">
           <div class="table-responsive">
             <table class="document-list">
               <thead class="document-list__header">
@@ -94,28 +94,30 @@
         </div>
       </div>
       
-      <div class="dashboard__section">
-        <div class="dashboard__section-header">
-          <h2 class="dashboard__section-title">Мои задачи</h2>
-          <NuxtLink to="/tasks" class="dashboard__section-link">Посмотреть все</NuxtLink>
+      <div class="overview__section">
+        <div class="overview__section-header">
+          <h2 class="overview__section-title">Мои задачи</h2>
+          <NuxtLink to="/tasks" class="overview__section-link">Посмотреть все</NuxtLink>
         </div>
         
-        <div v-if="loading.tasks" class="dashboard__loading">
+        <div v-if="loading.tasks" class="overview__loading">
           Загрузка задач...
         </div>
         
-        <div v-else-if="recentTasks.length === 0" class="dashboard__empty">
+        <div v-else-if="recentTasks.length === 0" class="overview__empty">
           <p>Задачи не найдены.</p>
           <NuxtLink to="/tasks/create" class="btn btn-primary">Создать задачу</NuxtLink>
         </div>
         
-        <div v-else class="dashboard__tasks">
+        <div v-else class="overview__tasks">
           <TaskCard 
             v-for="task in recentTasks" 
             :key="task.id" 
             :task="task"
-            @edit="navigateTo(`/tasks/${task.id}/edit`)"
+            @edit="navigateTo(`/tasks/create?edit=${task.id}`)"
+            @view="navigateTo(`/tasks/${$event}`)"
             @status-change="handleTaskStatusChange"
+            class="overview__task-card"
           />
         </div>
       </div>
@@ -244,26 +246,55 @@ function handleSearchSelect(result) {
 }
 
 // Handle task status change
-function handleTaskStatusChange({ id, status }) {
-  // Task status is already updated in the store by the TaskCard component
-  // This is just a hook for any additional actions needed
-  console.log(`Task ${id} status changed to ${status}`);
+function handleTaskStatusChange({ taskId, newStatus }) {
+  tasksStore.updateTaskStatus(taskId, newStatus);
+  // Refresh data after status change
+  fetchRecentTasks();
+}
+
+// Fetch recent tasks
+function fetchRecentTasks() {
+  tasksStore.fetchTasks();
 }
 </script>
 
 <style lang="scss" scoped>
-.dashboard {
+.overview {
   &__header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: $spacing-lg;
-    flex-wrap: wrap;
-    gap: $spacing-md;
+    
+    @media (max-width: $breakpoint-sm) {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: $spacing-md;
+    }
   }
   
-  &__title {
-    margin: 0;
+  &__tasks {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: $spacing-md;
+    
+    @media (max-width: $breakpoint-md) {
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    }
+    
+    @media (max-width: $breakpoint-sm) {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  &__task-card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    
+    @media (max-width: 320px) {
+      margin-bottom: $spacing-sm;
+    }
   }
   
   &__actions {

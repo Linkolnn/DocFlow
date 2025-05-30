@@ -195,7 +195,7 @@ export const useTasksStore = defineStore('tasks', {
         
         return updatedTask;
       } catch (error) {
-        this.error = 'Failed to update task: ' + error.message;
+        this.error = 'Не удалось обновить задачу: ' + error.message;
         return null;
       } finally {
         this.loading = false;

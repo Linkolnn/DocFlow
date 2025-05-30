@@ -2,7 +2,7 @@
   <div class="create-task-page">
     <div class="container">
       <div class="page-header">
-        <h1 class="page-title">Создание новой задачи</h1>
+        <h1 class="page-title">{{ isEditMode ? 'Редактирование задачи' : 'Создание новой задачи' }}</h1>
         <div class="page-actions">
           <NuxtLink to="/tasks" class="btn btn-outline-secondary">
             <i class="fas fa-arrow-left"></i> К списку задач
@@ -144,15 +144,18 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue';
-import { useRouter } from 'vue-router';
+import { ref, computed, onMounted, watch } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
 
 definePageMeta({
-  layout: 'default',
+  layout: 'dashboard',
   middleware: ['auth']
 });
 
 const router = useRouter();
+const route = useRoute();
+const isEditMode = ref(false);
+const editTaskId = ref(null);
 const users = ref([]);
 const isSubmitting = ref(false);
 const selectedFiles = ref([]);
@@ -242,12 +245,19 @@ async function submitForm() {
 
   try {
     // Имитация отправки данных на сервер
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    await new Promise(resolve => setTimeout(resolve, 1000));
     
-    // Перенаправление на страницу задач после успешного создания
-    router.push('/tasks');
+    if (isEditMode.value) {
+      // Обновление существующей задачи
+      updateTask(editTaskId.value, taskForm.value);
+      router.push(`/tasks/${editTaskId.value}`);
+    } else {
+      // Создание новой задачи
+      const newTaskId = createTask(taskForm.value);
+      router.push('/tasks');
+    }
   } catch (error) {
-    console.error('Ошибка при создании задачи:', error);
+    console.error(isEditMode.value ? 'Ошибка при обновлении задачи:' : 'Ошибка при создании задачи:', error);
   } finally {
     isSubmitting.value = false;
   }
@@ -286,6 +296,81 @@ function removeFile(index) {
   selectedFiles.value.splice(index, 1);
 }
 
+// Загрузка данных задачи для редактирования
+function loadTaskData(taskId) {
+  try {
+    // Имитация загрузки данных из API
+    const tasksData = JSON.parse(localStorage.getItem('tasks') || '[]');
+    const task = tasksData.find(t => t.id === taskId);
+    
+    if (task) {
+      // Заполняем форму данными задачи
+      taskForm.value = {
+        title: task.title || '',
+        description: task.description || '',
+        priority: task.priority || 'medium',
+        dueDate: task.dueDate ? new Date(task.dueDate).toISOString().split('T')[0] : '',
+        assigneeId: task.assigneeId || '',
+        notifyAssignee: task.notifyAssignee !== undefined ? task.notifyAssignee : true,
+        highVisibility: task.highVisibility || false
+      };
+    } else {
+      console.error('Задача не найдена');
+      router.push('/tasks');
+    }
+  } catch (error) {
+    console.error('Ошибка при загрузке данных задачи:', error);
+    router.push('/tasks');
+  }
+}
+
+// Создание новой задачи
+function createTask(taskData) {
+  try {
+    const tasksData = JSON.parse(localStorage.getItem('tasks') || '[]');
+    
+    // Создаем новую задачу
+    const newTask = {
+      id: Date.now().toString(),
+      ...taskData,
+      status: 'not_started',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      comments: []
+    };
+    
+    tasksData.push(newTask);
+    localStorage.setItem('tasks', JSON.stringify(tasksData));
+    
+    return newTask.id;
+  } catch (error) {
+    console.error('Ошибка при создании задачи:', error);
+    return null;
+  }
+}
+
+// Обновление существующей задачи
+function updateTask(taskId, taskData) {
+  try {
+    const tasksData = JSON.parse(localStorage.getItem('tasks') || '[]');
+    const taskIndex = tasksData.findIndex(t => t.id === taskId);
+    
+    if (taskIndex !== -1) {
+      // Обновляем задачу, сохраняя некоторые оригинальные поля
+      const updatedTask = {
+        ...tasksData[taskIndex],
+        ...taskData,
+        updatedAt: new Date().toISOString()
+      };
+      
+      tasksData[taskIndex] = updatedTask;
+      localStorage.setItem('tasks', JSON.stringify(tasksData));
+    }
+  } catch (error) {
+    console.error('Ошибка при обновлении задачи:', error);
+  }
+}
+
 function formatFileSize(size) {
   if (size < 1024) {
     return size + ' B';
@@ -297,6 +382,13 @@ function formatFileSize(size) {
 }
 
 onMounted(() => {
+  // Проверяем, есть ли параметр edit в URL
+  if (route.query.edit) {
+    isEditMode.value = true;
+    editTaskId.value = route.query.edit;
+    loadTaskData(editTaskId.value);
+  }
+  
   // Имитация загрузки пользователей
   users.value = [
     { id: 1, firstName: 'Иван', lastName: 'Иванов' },

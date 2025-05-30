@@ -1,10 +1,10 @@
 <template>
-  <div class="dashboard-layout">
+  <div class="overview-layout">
     <Header />
-    <div class="dashboard-layout__container">
+    <div class="overview-layout__container">
       <Sidebar />
-      <main class="dashboard-layout__content">
-        <div class="dashboard-layout__scroll-container">
+      <main class="overview-layout__content">
+        <div class="overview-layout__scroll-container">
           <slot />
         </div>
       </main>
@@ -28,7 +28,7 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
-.dashboard-layout {
+.overview-layout {
   min-height: 100vh;
   
   &__container {

@@ -61,6 +61,22 @@
       
       <InputField
         v-if="formType === 'register'"
+        v-model="form.position"
+        :label="$t('position')"
+        :error="errors.position"
+        @blur="validateField('position')"
+      />
+      
+      <InputField
+        v-if="formType === 'register'"
+        v-model="form.department"
+        :label="$t('department')"
+        :error="errors.department"
+        @blur="validateField('department')"
+      />
+      
+      <InputField
+        v-if="formType === 'register'"
         v-model="form.company"
         :label="$t('company')"
         :error="errors.company"
@@ -113,6 +129,8 @@ const form = ref({
   email: '',
   password: '',
   confirmPassword: '',
+  position: '',
+  department: '',
   company: ''
 });
 
@@ -122,6 +140,8 @@ const errors = ref({
   email: '',
   password: '',
   confirmPassword: '',
+  position: '',
+  department: '',
   company: ''
 });
 
@@ -172,15 +192,22 @@ function validateField(field) {
 }
 
 function validateForm() {
-  // Validate all fields
-  validateField('firstName');
-  validateField('lastName');
-  validateField('email');
-  validateField('password');
-  validateField('confirmPassword');
-  validateField('company');
+  // Валидируем все поля в зависимости от типа формы
+  if (props.formType === 'login') {
+    validateField('email');
+    validateField('password');
+  } else {
+    validateField('firstName');
+    validateField('lastName');
+    validateField('email');
+    validateField('password');
+    validateField('confirmPassword');
+    validateField('position');
+    validateField('department');
+    validateField('company');
+  }
   
-  // Check if there are any errors
+  // Проверяем, есть ли ошибки
   return !Object.values(errors.value).some(error => error);
 }
 
@@ -199,6 +226,8 @@ async function handleSubmit() {
       lastName: form.value.lastName,
       email: form.value.email,
       password: form.value.password,
+      position: form.value.position,
+      department: form.value.department,
       company: form.value.company
     });
   }

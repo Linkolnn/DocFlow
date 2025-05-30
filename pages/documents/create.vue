@@ -1,8 +1,8 @@
 <template>
   <div class="document-form-page">
     <div class="document-form-page__header">
-      <h1 class="document-form-page__title">Create Document</h1>
-      <Button @click="router.back()" variant="outline">Back</Button>
+      <h1 class="document-form-page__title">Создать документ</h1>
+      <Button @click="router.back()" variant="outline">Назад</Button>
     </div>
     
     <div class="document-form">
@@ -14,7 +14,7 @@
       />
       
       <div class="form-group">
-        <label for="title" class="form-label">Document Title <span class="required">*</span></label>
+        <label for="title" class="form-label">Название документа <span class="required">*</span></label>
         <input
           id="title"
           v-model="form.title"
@@ -27,7 +27,7 @@
       </div>
       
       <div class="form-group">
-        <label for="type" class="form-label">Document Type <span class="required">*</span></label>
+        <label for="type" class="form-label">Тип документа <span class="required">*</span></label>
         <select
           id="type"
           v-model="form.type"
@@ -35,18 +35,18 @@
           :class="{ 'is-invalid': errors.type }"
           required
         >
-          <option value="">Select document type</option>
-          <option value="contract">Contract</option>
-          <option value="invoice">Invoice</option>
-          <option value="report">Report</option>
-          <option value="proposal">Proposal</option>
-          <option value="other">Other</option>
+          <option value="">Выберите тип документа</option>
+          <option value="contract">Договор</option>
+          <option value="invoice">Счет</option>
+          <option value="report">Отчет</option>
+          <option value="proposal">Предложение</option>
+          <option value="other">Другое</option>
         </select>
         <div v-if="errors.type" class="form-error">{{ errors.type }}</div>
       </div>
       
       <div class="form-group">
-        <label for="description" class="form-label">Description</label>
+        <label for="description" class="form-label">Описание</label>
         <textarea
           id="description"
           v-model="form.description"
@@ -56,7 +56,7 @@
       </div>
       
       <div class="form-group">
-        <label for="content" class="form-label">Document Content <span class="required">*</span></label>
+        <label for="content" class="form-label">Содержание документа <span class="required">*</span></label>
         <textarea
           id="content"
           v-model="form.content"
@@ -69,22 +69,22 @@
       </div>
       
       <div class="form-group">
-        <label class="form-label">Status</label>
+        <label class="form-label">Статус</label>
         <div class="radio-group">
           <label class="radio-label">
             <input type="radio" v-model="form.status" value="draft" />
-            <span>Draft</span>
+            <span>Черновик</span>
           </label>
           <label class="radio-label">
             <input type="radio" v-model="form.status" value="pending" />
-            <span>Submit for Approval</span>
+            <span>Отправить на утверждение</span>
           </label>
         </div>
       </div>
       
       <div class="form-actions">
-        <Button @click="router.back()" variant="outline">Cancel</Button>
-        <Button @click="saveDocument" :loading="loading">Save Document</Button>
+        <Button @click="router.back()" variant="outline">Отмена</Button>
+        <Button @click="saveDocument" :loading="loading">Сохранить документ</Button>
       </div>
     </div>
   </div>
@@ -127,19 +127,19 @@ function validateForm() {
   
   // Validate title
   if (!form.title.trim()) {
-    errors.title = 'Document title is required';
+    errors.title = 'Название документа обязательно';
     isValid = false;
   }
   
   // Validate type
   if (!form.type) {
-    errors.type = 'Document type is required';
+    errors.type = 'Тип документа обязателен';
     isValid = false;
   }
   
   // Validate content
   if (!form.content.trim()) {
-    errors.content = 'Document content is required';
+    errors.content = 'Содержание документа обязательно';
     isValid = false;
   }
   
@@ -166,10 +166,10 @@ async function saveDocument() {
     if (newDocument) {
       router.push(`/documents/${newDocument.id}`);
     } else {
-      error.value = 'Failed to create document';
+      error.value = 'Не удалось создать документ';
     }
   } catch (err) {
-    error.value = err.message || 'An error occurred while creating the document';
+    error.value = err.message || 'Произошла ошибка при создании документа';
   } finally {
     loading.value = false;
   }

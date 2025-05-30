@@ -9,7 +9,7 @@
           </p>
           <div class="hero__actions">
             <NuxtLink v-if="!isAuthenticated" to="/register" class="btn btn-primary hero__btn">Начать работу</NuxtLink>
-            <NuxtLink v-else to="/dashboard" class="btn btn-primary hero__btn">Перейти в дашборд</NuxtLink>
+            <NuxtLink v-else to="/dashboard" class="btn btn-primary hero__btn">Начать работать</NuxtLink>
             <NuxtLink to="#features" class="btn btn-outline hero__btn">Узнать больше</NuxtLink>
           </div>
         </div>

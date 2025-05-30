@@ -18,16 +18,39 @@ export const useAuthStore = defineStore('auth', {
   actions: {
     async initialize() {
       try {
-        // Get token from secure cookie
+        // Получаем токен из cookie
         const token = Cookies.get('auth_token');
         
+        // Инициализация данных пользователей из JSON файла, если localStorage пуст
+        await this.initializeUsersFromJson();
+        
+        // Если есть токен, пытаемся автоматически войти
         if (token) {
           this.token = token;
           await this.fetchUserProfile();
         }
       } catch (error) {
-        console.error('Authentication initialization error:', error);
+        console.error('Ошибка инициализации аутентификации:', error);
         this.logout();
+      }
+    },
+    
+    async initializeUsersFromJson() {
+      try {
+        // Проверяем, есть ли уже пользователи в localStorage
+        const users = localStorage.getItem('users');
+        
+        if (!users || JSON.parse(users).length === 0) {
+          // Импортируем данные аккаунтов из JSON файла
+          const accounts = await import('~/data/accounts.json');
+          localStorage.setItem('users', JSON.stringify(accounts.default));
+          console.log('Аккаунты успешно инициализированы из JSON файла');
+        }
+        
+        return true;
+      } catch (error) {
+        console.error('Ошибка при инициализации пользователей:', error);
+        return false;
       }
     },
     
@@ -36,20 +59,20 @@ export const useAuthStore = defineStore('auth', {
       this.error = null;
       
       try {
-        // In a real app, this would be an API call
-        // For now, we'll simulate authentication with localStorage
+        // В реальном приложении это был бы API-запрос
+        // Для демонстрации используем localStorage
         const users = JSON.parse(localStorage.getItem('users') || '[]');
         const user = users.find(u => u.email === email);
         
         if (!user || user.password !== password) {
-          throw new Error('Invalid email or password');
+          throw new Error('Неверный email или пароль');
         }
         
         // Remove password from user object before storing in state
         const { password: _, ...userWithoutPassword } = user;
         
         this.user = userWithoutPassword;
-        this.token = 'simulated-jwt-token-' + Math.random().toString(36).substring(2);
+        this.token = `simulated-jwt-token-${userWithoutPassword.id}-${Math.random().toString(36).substring(2)}`;
         this.isAuthenticated = true;
         
         // Store token in secure cookie (httpOnly should be true in production)
@@ -73,27 +96,33 @@ export const useAuthStore = defineStore('auth', {
       this.error = null;
       
       try {
-        // In a real app, this would be an API call
-        // For now, we'll simulate registration with localStorage
+        // Сначала убедимся, что данные пользователей инициализированы
+        await this.initializeUsersFromJson();
+        
+        // Загружаем текущих пользователей
         const users = JSON.parse(localStorage.getItem('users') || '[]');
         
-        // Check if email already exists
+        // Проверяем, не занят ли email
         if (users.some(user => user.email === userData.email)) {
-          throw new Error('Email already in use');
+          throw new Error('Этот email уже используется');
         }
         
-        // Add user to "database"
+        // Создаем нового пользователя
         const newUser = {
           id: Date.now().toString(),
           ...userData,
-          role: 'user', // Default role
+          role: 'user', // Роль по умолчанию - обычный пользователь
+          position: userData.position || 'Сотрудник',
+          department: userData.department || 'Общий отдел',
+          avatar: userData.avatar || null,
           createdAt: new Date().toISOString()
         };
         
+        // Добавляем пользователя в базу данных
         users.push(newUser);
         localStorage.setItem('users', JSON.stringify(users));
         
-        // Auto login after registration
+        // Автоматический вход после регистрации
         return await this.login(userData.email, userData.password);
       } catch (error) {
         this.error = error.message;
@@ -109,13 +138,20 @@ export const useAuthStore = defineStore('auth', {
       this.loading = true;
       
       try {
-        // In a real app, this would be an API call using the token
-        // For now, we'll simulate it with localStorage
+        // В реальном приложении это был бы API-запрос с использованием токена
+        // Для демонстрации используем localStorage
         const users = JSON.parse(localStorage.getItem('users') || '[]');
         
-        // Find user by simulated token (in real app, would decode JWT)
-        // This is just for demonstration
-        const user = users[0]; // Just get first user for demo
+        // Извлекаем идентификатор пользователя из токена
+        // Формат токена: 'simulated-jwt-token-{userId}-{random}'
+        const tokenParts = this.token.split('-');
+        const userId = tokenParts.length >= 4 ? tokenParts[3] : null;
+        
+        // Находим пользователя по ID или по email
+        let user = null;
+        if (userId) {
+          user = users.find(u => u.id === userId);
+        }
         
         if (!user) {
           throw new Error('User not found');

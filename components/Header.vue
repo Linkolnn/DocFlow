@@ -5,7 +5,7 @@
       
       <nav class="header__nav" :class="{ open: isMenuOpen }">
         <NuxtLink to="/" class="header__nav-item">Главная</NuxtLink>
-        <NuxtLink v-if="isAuthenticated" to="/dashboard" class="header__nav-item">Дашборд</NuxtLink>
+        <NuxtLink v-if="isAuthenticated" to="/dashboard" class="header__nav-item">Обзор</NuxtLink>
         <NuxtLink v-if="isAuthenticated" to="/documents" class="header__nav-item">Документы</NuxtLink>
         <NuxtLink v-if="isAuthenticated" to="/analytics" class="header__nav-item">Аналитика</NuxtLink>
         <NuxtLink v-if="isAdmin" to="/admin" class="header__nav-item">Админ</NuxtLink>
@@ -22,7 +22,7 @@
         </template>
       </div>
       
-      <button @click="toggleMenu" class="header__mobile-toggle">
+      <button @click="toggleMenu" class="header__mobile-toggle" aria-label="Открыть меню">
         <span v-if="isMenuOpen">✕</span>
         <span v-else>☰</span>
       </button>
@@ -31,18 +31,20 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { computed } from 'vue';
 import { useAuthStore } from '~/stores/auth';
+import { useUIStore } from '~/stores/ui';
 
 const authStore = useAuthStore();
-const isMenuOpen = ref(false);
+const uiStore = useUIStore();
 
 const isAuthenticated = computed(() => authStore.isAuthenticated);
 const isAdmin = computed(() => authStore.isAdmin);
 const userFullName = computed(() => authStore.userFullName);
+const isMenuOpen = computed(() => uiStore.isSidebarOpen);
 
 function toggleMenu() {
-  isMenuOpen.value = !isMenuOpen.value;
+  uiStore.toggleSidebar();
 }
 
 function logout() {

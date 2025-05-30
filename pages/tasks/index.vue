@@ -104,7 +104,7 @@
               Завершить
             </button>
             
-            <NuxtLink :to="`/tasks/${task.id}/edit`" class="btn btn-sm btn-outline-secondary">
+            <NuxtLink :to="`/tasks/create?edit=${task.id}`" class="btn btn-sm btn-outline-secondary">
               Редактировать
             </NuxtLink>
           </div>
@@ -140,7 +140,7 @@
 import { ref, computed, onMounted } from 'vue';
 
 definePageMeta({
-  layout: 'default',
+  layout: 'dashboard',
   middleware: ['auth']
 });
 
@@ -262,42 +262,63 @@ onMounted(async () => {
   try {
     // Имитация загрузки данных
     setTimeout(() => {
-      // Тестовые данные для демонстрации
-      users.value = [
+      // Загрузка пользователей
+      users.value = JSON.parse(localStorage.getItem('users') || JSON.stringify([
         { id: 1, firstName: 'Иван', lastName: 'Иванов' },
         { id: 2, firstName: 'Петр', lastName: 'Петров' },
         { id: 3, firstName: 'Анна', lastName: 'Сидорова' }
-      ];
+      ]));
       
-      tasks.value = [
-        {
-          id: 1,
-          title: 'Создать макет главной страницы',
-          description: 'Разработать дизайн-макет главной страницы приложения',
-          status: 'completed',
-          priority: 'high',
-          assigneeId: 1,
-          dueDate: '2023-05-15'
-        },
-        {
-          id: 2,
-          title: 'Разработать API для работы с документами',
-          description: 'Создать REST API для загрузки, скачивания и управления документами',
-          status: 'in_progress',
-          priority: 'high',
-          assigneeId: 2,
-          dueDate: '2023-06-20'
-        },
-        {
-          id: 3,
-          title: 'Написать документацию',
-          description: 'Подготовить техническую документацию по проекту',
-          status: 'not_started',
-          priority: 'medium',
-          assigneeId: 3,
-          dueDate: '2023-07-10'
-        }
-      ];
+      // Загрузка задач из localStorage
+      const savedTasks = localStorage.getItem('tasks');
+      
+      if (savedTasks) {
+        // Если в localStorage есть задачи, загружаем их
+        tasks.value = JSON.parse(savedTasks);
+      } else {
+        // Если в localStorage нет задач, используем демо-данные
+        const defaultTasks = [
+          {
+            id: 1,
+            title: 'Создать макет главной страницы',
+            description: 'Разработать дизайн-макет главной страницы приложения',
+            status: 'completed',
+            priority: 'high',
+            assigneeId: 1,
+            dueDate: '2023-05-15',
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+            comments: []
+          },
+          {
+            id: 2,
+            title: 'Разработать API для работы с документами',
+            description: 'Создать REST API для загрузки, скачивания и управления документами',
+            status: 'in_progress',
+            priority: 'high',
+            assigneeId: 2,
+            dueDate: '2023-06-20',
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+            comments: []
+          },
+          {
+            id: 3,
+            title: 'Написать документацию',
+            description: 'Подготовить техническую документацию по проекту',
+            status: 'not_started',
+            priority: 'medium',
+            assigneeId: 3,
+            dueDate: '2023-07-10',
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+            comments: []
+          }
+        ];
+        
+        tasks.value = defaultTasks;
+        localStorage.setItem('tasks', JSON.stringify(defaultTasks));
+      }
       
       loading.value = false;
     }, 1000);
@@ -608,31 +629,5 @@ onMounted(async () => {
   width: 100%;
   padding-right: 15px;
   padding-left: 15px;
-  margin-right: auto;
-  margin-left: auto;
-}
-
-@media (min-width: 576px) {
-  .container {
-    max-width: 540px;
-  }
-}
-
-@media (min-width: 768px) {
-  .container {
-    max-width: 720px;
-  }
-}
-
-@media (min-width: 992px) {
-  .container {
-    max-width: 960px;
-  }
-}
-
-@media (min-width: 1200px) {
-  .container {
-    max-width: 1140px;
-  }
 }
 </style>
