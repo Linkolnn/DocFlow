@@ -301,7 +301,8 @@ function loadTaskData(taskId) {
   try {
     // Имитация загрузки данных из API
     const tasksData = JSON.parse(localStorage.getItem('tasks') || '[]');
-    const task = tasksData.find(t => t.id === taskId);
+    // Преобразуем ID в строку для корректного сравнения
+    const task = tasksData.find(t => String(t.id) === String(taskId));
     
     if (task) {
       // Заполняем форму данными задачи
@@ -353,7 +354,8 @@ function createTask(taskData) {
 function updateTask(taskId, taskData) {
   try {
     const tasksData = JSON.parse(localStorage.getItem('tasks') || '[]');
-    const taskIndex = tasksData.findIndex(t => t.id === taskId);
+    // Преобразуем ID в строку для корректного сравнения
+    const taskIndex = tasksData.findIndex(t => String(t.id) === String(taskId));
     
     if (taskIndex !== -1) {
       // Обновляем задачу, сохраняя некоторые оригинальные поля

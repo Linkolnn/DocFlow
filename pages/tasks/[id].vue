@@ -25,6 +25,14 @@
         <div class="task-detail-page__actions">
           <Button @click="router.push('/tasks')" variant="outline">Назад</Button>
           <Button @click="router.push(`/tasks/create?edit=${task.id}`)" variant="primary">Редактировать</Button>
+          <Button 
+            v-if="isAdmin" 
+            @click="confirmDeleteTask" 
+            variant="danger" 
+            class="delete-btn"
+          >
+            Удалить
+          </Button>
         </div>
       </div>
       
@@ -156,6 +164,8 @@ const loading = ref(true);
 const newComment = ref('');
 const task = ref(null);
 const users = ref([]);
+const isAdmin = computed(() => authStore.isAdmin);
+const showDeleteConfirm = ref(false);
 
 // Загрузка данных о задаче
 onMounted(async () => {
@@ -298,6 +308,35 @@ async function addComment() {
     console.error('Ошибка при добавлении комментария:', error);
   }
 }
+
+// Подтверждение удаления задачи
+function confirmDeleteTask() {
+  if (confirm('Вы уверены, что хотите удалить эту задачу? Это действие нельзя отменить.')) {
+    deleteTask();
+  }
+}
+
+// Удаление задачи (доступно только администраторам)
+async function deleteTask() {
+  try {
+    // Проверяем, является ли пользователь администратором
+    if (!authStore.isAdmin) {
+      alert('У вас нет прав для удаления задач.');
+      return;
+    }
+    
+    // Имитация запроса к API
+    const tasksData = JSON.parse(localStorage.getItem('tasks') || '[]');
+    const updatedTasks = tasksData.filter(t => t.id !== taskId.value);
+    
+    localStorage.setItem('tasks', JSON.stringify(updatedTasks));
+    
+    // Перенаправляем на страницу со списком задач
+    router.push('/tasks');
+  } catch (error) {
+    console.error('Ошибка при удалении задачи:', error);
+  }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -354,6 +393,18 @@ async function addComment() {
     @media (max-width: $breakpoint-sm) {
       width: 100%;
       justify-content: space-between;
+    }
+    
+    .delete-btn {
+      background-color: #dc3545;
+      border-color: #dc3545;
+      color: white;
+      margin-left: $spacing-sm;
+      
+      &:hover {
+        background-color: #c82333;
+        border-color: #bd2130;
+      }
     }
   }
 }
